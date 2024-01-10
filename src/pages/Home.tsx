@@ -13,7 +13,8 @@ import React from "react";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-import Header from "./Header.tsx";
+import Header from "../components/Header.tsx";
+import CardHousing from "../components/CardHousing.tsx";
 
 // Define the type for the range state
 type RangeType = [number, number];
@@ -35,7 +36,8 @@ function Home() {
     return (
         <>
             <Header></Header>
-            <section className={"flex items-center mx-16 my-5 justify-center bg-amber-100 py-3 rounded-2xl"}>
+            {/* -- Search bar  -- */}
+            <section className={"flex items-center mx-16 my-5 justify-center bg-green-200 py-3 rounded-2xl"}>
                 <div className={"w-40 mx-12"}>
                     <TextField id="outlined-basic" label="Town" variant="outlined" />
                 </div>
@@ -70,6 +72,27 @@ function Home() {
                         color: "black",
                     }}/>
                 </Link>
+            </section>
+            {/* -- Apartment --*/}
+            <section className={"flex mx-16"}>
+                <CardHousing
+                    url={"https://a0.muscache.com/im/pictures/e25a9b25-fa98-4160-bfd1-039287bf38b6.jpg?im_w=720"}
+                    title={"Abiansemal, indonésia"}
+                    description={"Looking for a first-class vacation home with a historic ambience? Then this unique property with huge castle grounds would be the perfect choice."}
+                    price={"82"}
+                />
+                <CardHousing
+                    url={"https://a0.muscache.com/im/pictures/dd8d7c26-ab53-439b-bd93-77213d8d5156.jpg?im_w=720"}
+                    title={"Les Galeras, Republic Dominica"}
+                    description={"Looking for a first-class vacation home with a historic ambience? Then this unique property with huge castle grounds would be the perfect choice."}
+                    price={"78"}
+                />
+                <CardHousing
+                    url={"https://a0.muscache.com/im/pictures/miso/Hosting-826800524178117410/original/3ed86cb2-4019-48d7-9b85-0c0cdf9fdb0a.jpeg?im_w=720"}
+                    title={"La Barbade, Barbade"}
+                    description={"Looking for a first-class vacation home with a historic ambience? Then this unique property with huge castle grounds would be the perfect choice."}
+                    price={"96"}
+                />
             </section>
         </>
     )
