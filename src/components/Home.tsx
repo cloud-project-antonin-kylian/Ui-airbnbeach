@@ -1,95 +1,45 @@
-import '../index.css'
-import logo from '../../public/Logo.png'
-import {AppBar, Box, FormControl, InputBase, InputLabel, MenuItem, Select, Slider, TextField, Toolbar} from "@mui/material";
+import '../index.css';
+import {
+    FormControl,
+    InputLabel,
+    Link,
+    MenuItem,
+    Select,
+    Slider,
+    TextField,
+} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-import { styled, alpha } from '@mui/material/styles';
+import React from "react";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
+import Header from "./Header.tsx";
+
+// Define the type for the range state
+type RangeType = [number, number];
 
 function Home() {
-
-    const Search = styled('div')(({ theme }) => ({
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: alpha(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.common.white, 0.25),
-        },
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(1),
-            width: 'auto',
-        },
-    }));
-
-    const SearchIconWrapper = styled('div')(({ theme }) => ({
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    }));
-
-    const StyledInputBase = styled(InputBase)(({ theme }) => ({
-        color: 'inherit',
-        width: '100%',
-        '& .MuiInputBase-input': {
-            padding: theme.spacing(1, 1, 1, 0),
-            // vertical padding + font size from searchIcon
-            paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-            transition: theme.transitions.create('width'),
-            [theme.breakpoints.up('sm')]: {
-                width: '12ch',
-                '&:focus': {
-                    width: '20ch',
-                },
-            },
-        },
-    }));
     let typeApartment;
+    const [range, setRange] = React.useState<RangeType>([5, 30]);
+    const [startDate, setStartDate] = React.useState<Date>(new Date());
 
-    function handleChange() {
-
-    }
+    const handleChange = ( _event: Event, newValue: number | number[], activeThumb: number) => {
+        if (!Array.isArray(newValue)) { return; }
+        if (activeThumb === 0) {
+            setRange([Math.min(newValue[0], range[1]), range[1]]);
+        } else {
+            setRange([range[0], Math.max(newValue[1], range[0])]);
+        }
+    };
 
     return (
         <>
-            <section className='flex' id=''>
-                <img src={logo} alt='logo' className='img_logo'/>
-                <h1 className='flex align_center'>Airbnbeach</h1>
-            </section>
-            <section className={"flex mx-16"}>
-                <Box sx={{ flexGrow: 1 }}>
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Search sx={{
-                                width: '1/2'
-                            }}>
-                                <SearchIconWrapper>
-                                    <SearchIcon />
-                                </SearchIconWrapper>
-                                <StyledInputBase
-                                    placeholder="Look for your vacation beach ..."
-                                    inputProps={{ 'aria-label': 'search' }}
-                                    style={{ fontSize: '16px' }}
-                                />
-                            </Search>
-                        </Toolbar>
-                    </AppBar>
-                </Box>
-                {/*<div className='flex' id='search_bar'>
-                    <p>Look for your vacation beach ...</p>
-                    <button>
-                        <img src='https://cdn3.iconfinder.com/data/icons/feather-5/24/search-512.png' id='img_search'/>
-                    </button>
-                </div>*/}
-            </section>
-            <section className={"flex items-center mx-16 my-5 w-full justify-center"}>
-                <article className={"flex-1"}>
+            <Header></Header>
+            <section className={"flex items-center mx-16 my-5 justify-center bg-amber-100 py-3 rounded-2xl"}>
+                <div className={"w-40 mx-12"}>
                     <TextField id="outlined-basic" label="Town" variant="outlined" />
-                </article>
-                <article className={"flex-1"}>
+                </div>
+                <div className={"w-40 mx-12"}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Type</InputLabel>
                         <Select
@@ -97,22 +47,29 @@ function Home() {
                             id="demo-simple-select"
                             value={typeApartment}
                             label="Age"
-                            onChange={handleChange}
                         >
-                            <MenuItem value={10}>Appartement</MenuItem>
+                            <MenuItem value={10}>Apartment</MenuItem>
+                            <MenuItem value={40}>Experience</MenuItem>
                             <MenuItem value={20}>House</MenuItem>
                             <MenuItem value={30}>Loft</MenuItem>
                         </Select>
                     </FormControl>
-                </article>
-                <article className={"flex-1"}>
-                    <Slider
-                        size="small"
-                        defaultValue={70}
-                        aria-label="Small"
-                        valueLabelDisplay="auto"
-                    />
-                </article>
+                </div>
+                <div className={"w-52 mx-12"}>
+                    <Slider value={range}
+                            onChange={handleChange}
+                            valueLabelDisplay="auto"/>
+                    <p className={"italic text-black"}>Between : {range[0]} - {range[1]} $/night</p>
+                </div>
+                <div className={"w-32 mx-12 mr-32 flex"}>
+                    <DatePicker selected={startDate} onChange={(date : Date) => setStartDate(date)} className={"text-center bg-transparent text-black rounded py-3 border-gray-400 border"}/>
+                </div>
+                <Link href="#">
+                    <SearchIcon sx={{
+                        fontSize: 40,
+                        color: "black",
+                    }}/>
+                </Link>
             </section>
         </>
     )
